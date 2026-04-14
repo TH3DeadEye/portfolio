@@ -1,0 +1,391 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f6f0d7;              /* warm cream page background */
+  --surface: #efe8c4;          /* slightly darker cream for cards */
+  --border: #9cab84;           /* medium sage border */
+  --border-soft: rgba(156, 171, 132, 0.45);
+  --accent: #89986d;           /* deep olive — primary accent */
+  --accent-soft: rgba(137, 152, 109, 0.18);
+  --highlight: #5a6a3f;        /* darker olive for maximum contrast */
+  --text: #2b321e;             /* deep forest-olive for body text */
+  --muted: #5c664a;            /* mid olive for secondary text */
+  --muted-dim: rgba(92, 102, 74, 0.75);
+  --sage: #c5d89d;             /* bright sage — accents */
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-highlight: var(--highlight);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --font-display: var(--font-syne);
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-jetbrains);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(156, 171, 132, 0.35), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(197, 216, 157, 0.25), transparent 60%),
+    var(--bg);
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Custom cursor */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: multiply;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease;
+}
+.cursor-dot.hovering {
+  width: 32px;
+  height: 32px;
+  background: rgba(137, 152, 109, 0.35);
+  border: 1px solid var(--accent);
+}
+
+@media (max-width: 768px) {
+  .cursor-dot {
+    display: none;
+  }
+}
+
+/* Utility: reveal animation prep */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Grain texture overlay — subtle paper feel on cream */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Link hover line */
+.nav-link {
+  position: relative;
+  padding: 0.25rem 0;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background: var(--highlight);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Project card hover */
+.project-card {
+  transition: transform 0.4s ease, border-color 0.4s ease;
+}
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+
+/* Typewriter caret */
+.type-caret {
+  animation: caret-blink 1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Konami confetti drop */
+@keyframes confetti-drop {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+.confetti-dot {
+  position: fixed;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  animation: confetti-drop linear forwards;
+}
+
+/* -------- Adrian-Hajdin-style utility classes (adapted to cream palette) -------- */
+
+.hero-badge {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  width: fit-content;
+  font-size: 0.875rem;
+  font-family: var(--font-jetbrains);
+}
+
+/* Timeline + experience card styles */
+.exp-card-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2.5rem;
+  justify-content: space-between;
+}
+@media (min-width: 1280px) {
+  .exp-card-wrapper {
+    flex-direction: row;
+    gap: 5rem;
+  }
+}
+
+/* Timeline gradient line — always visible, no cover overlay */
+.gradient-line {
+  background: linear-gradient(
+    0deg,
+    rgba(156, 171, 132, 0) 0%,
+    #c5d89d 20%,
+    #9cab84 45%,
+    #89986d 70%,
+    #5a6a3f 100%
+  );
+}
+
+.timeline-logo {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: 9999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(43, 50, 30, 0.08);
+}
+@media (min-width: 768px) {
+  .timeline-logo {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+.timeline-logo img {
+  max-width: 78%;
+  max-height: 78%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* GlowCard — cream variant */
+.card {
+  --start: 0;
+  position: relative;
+  z-index: 40;
+  overflow: hidden;
+  transition: border-color 1s ease-in-out;
+}
+
+.card-border {
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.card::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: radial-gradient(circle, #5a6a3f 0%, #c5d89d 100%);
+  background-attachment: fixed;
+  mask: linear-gradient(#0000, #0000),
+    conic-gradient(
+      from calc((var(--start) - 15) * 1deg),
+      rgba(137, 152, 109, 0.12) 0deg,
+      #89986d,
+      rgba(137, 152, 109, 0) 100deg
+    );
+  mask-composite: intersect;
+  mask-clip: padding-box, border-box;
+  opacity: 0;
+  transition: 0.5s ease;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.glow {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(10px);
+}
+
+/* Showcase layout */
+.showcase-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  justify-content: space-between;
+}
+@media (min-width: 1280px) {
+  .showcase-layout {
+    flex-direction: row;
+  }
+}
+
+.first-project-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+@media (min-width: 1280px) {
+  .first-project-wrapper {
+    width: 60%;
+  }
+}
+
+.first-project-wrapper .image-wrapper {
+  height: 24rem;
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .first-project-wrapper .image-wrapper {
+    height: 50vh;
+  }
+}
+@media (min-width: 1280px) {
+  .first-project-wrapper .image-wrapper {
+    height: 70vh;
+  }
+}
+
+.first-project-wrapper .image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  position: absolute;
+  inset: 0;
+}
+
+.project-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+@media (min-width: 768px) and (max-width: 1279px) {
+  .project-list-wrapper {
+    flex-direction: row;
+  }
+}
+@media (min-width: 1280px) {
+  .project-list-wrapper {
+    width: 40%;
+  }
+}
+
+.project-list-wrapper .project-tile {
+  flex: 1;
+}
+
+.project-list-wrapper .image-wrapper {
+  height: 16rem;
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  padding: 0;
+}
+@media (min-width: 768px) {
+  .project-list-wrapper .image-wrapper {
+    height: 13rem;
+  }
+}
+@media (min-width: 1024px) {
+  .project-list-wrapper .image-wrapper {
+    height: 18rem;
+  }
+}
+@media (min-width: 1280px) {
+  .project-list-wrapper .image-wrapper {
+    height: 37vh;
+    padding: 0 1.25rem;
+  }
+}
+
+.project-list-wrapper .image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 0.75rem;
+}
