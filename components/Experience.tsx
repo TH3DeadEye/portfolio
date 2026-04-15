@@ -48,10 +48,10 @@ const expCards: ExpCard[] = [
     ],
   },
   {
-    logoPath: "/images/logo3.png",
+    logoPath: "/images/nba.svg",
     logoAlt: "NBA Coach Assist mark",
-    logoWidth: 120,
-    logoHeight: 120,
+    logoWidth: 64,
+    logoHeight: 64,
     title: "NBA Coach Assist — Independent Project",
     date: "November 2025 — December 2025",
     company: "Solo Developer",
