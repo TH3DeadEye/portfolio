@@ -158,7 +158,7 @@ export default function Hero() {
           </a>
           <span className="text-[var(--border)]">/</span>
           <a
-            href="#work"
+            href="#resume"
             className="hover:text-[var(--highlight)] transition-colors"
           >
             see my work &rarr;
